@@ -1,41 +1,345 @@
-AI-Driven-Financial-Tool-for-Optimized-Investment-Strategies-
+📈 AI-Driven Financial Analysis & Explainable Stock Forecasting Dashboard
+🔎 Overview
 
-🚀 **Stock Prediction with LSTM, SMA Strategies & SHAP Explainability**  
+This project integrates Machine Learning, Technical Analysis, and Explainable AI into an interactive Streamlit dashboard for stock analysis and forecasting.
 
-## **🔹 Overview**  
-This project is a **comprehensive stock market analysis tool** that integrates **machine learning, technical analysis, and explainability techniques** to enhance financial decision-making.  
-It leverages **LSTM (Long Short-Term Memory) for stock price prediction**, **Simple Moving Averages (SMA) for trend analysis**, and **SHAP (SHapley Additive Explanations) for interpretability**.  
+It combines:
 
-## **🔹 Key Features & Steps**
-1️⃣ **Real-Time Stock Data Extraction**  
-- Uses **Yahoo Finance API** to download stock market data.  
-- Supports multiple stock tickers & customizable time periods.  
+LSTM (Long Short-Term Memory) for stock price forecasting
 
-2️⃣ **Stock Market Trend Analysis with SMA**  
-✔ Computes **SMA (Simple Moving Averages) - 30-day & 60-day** for trend identification.  
-✔ Generates **Buy/Sell signals** based on SMA crossover strategy.  
+SMA (Simple Moving Average) for trend detection
 
-3️⃣ **Stock Price Prediction using LSTM**  
-✔ Prepares **time-series data for LSTM training** using **MinMax Scaling**.  
-✔ Trains an **LSTM model with sequential layers** to predict future stock prices.  
-✔ Evaluates model accuracy using **RMSE (Root Mean Squared Error) & MAE (Mean Absolute Error)**.  
+RSI & MACD for momentum and strength analysis
 
-4️⃣ **Model Interpretability with SHAP (Explainability)**  
-✔ Uses **SHAP values to explain LSTM model predictions**.  
-✔ Visualizes **feature importance using SHAP summary plots**.  
+SHAP (SHapley Additive Explanations) for model interpretability
 
-5️⃣ **Interactive Streamlit Dashboard**  
-✔ Provides an **interactive UI** to explore stock trends & predictions.  
-✔ Displays **live stock charts, SMA crossovers, and LSTM predictions**.  
+The goal is not just to predict stock prices, but to:
 
-## **🔹 Technologies Used**
-- **Python (Pandas, NumPy, Matplotlib, Seaborn, TensorFlow, Scikit-Learn, SHAP)**  
-- **Yahoo Finance API (yfinance) for real-time stock data retrieval**  
-- **Machine Learning Models (LSTM for time-series prediction)**  
-- **Streamlit for Interactive Web Dashboard**  
+Detect market trends
 
-## **📌 Why This Project Matters**
-This project **bridges technical analysis with machine learning** to provide **data-driven insights for stock trading**.  
-By integrating **LSTM for predictive analytics and SHAP for explainability**, it ensures transparency and **better investment decisions**.  
+Evaluate model performance responsibly
 
-📂 **Explore the full repository to see the implementation, data, and results!** 🚀  
+Prevent overfitting
+
+Explain model decisions transparently
+
+Demonstrate disciplined financial AI modeling
+
+🎯 What Problem Does This Solve?
+
+Many stock prediction projects:
+
+Overfit historical data
+
+Ignore train/test discipline
+
+Use black-box models
+
+Provide no explanation for predictions
+
+Present unrealistic forecasting claims
+
+This project focuses on:
+
+✅ Proper time-based train / validation / test splitting
+✅ Overfitting awareness via loss curves
+✅ Transparent prediction evaluation
+✅ Explainable AI using SHAP
+✅ Integration of human financial intuition with ML
+
+It is built as an educational and decision-intelligence demonstration tool, not a trading system.
+
+🏗 System Architecture
+
+The system is structured in four conceptual layers:
+
+1️⃣ Data Layer
+
+Retrieves stock data (Yahoo Finance with fallback)
+
+Cleans and preprocesses time-series data
+
+Applies MinMax scaling for neural network stability
+
+2️⃣ Feature Engineering Layer
+
+Generates financial indicators:
+
+SMA (trend detection)
+
+RSI (momentum imbalance)
+
+MACD (trend strength & acceleration)
+
+3️⃣ Modeling Layer
+
+LSTM sequence model
+
+Chronological 70/15/15 train/validation/test split
+
+Early stopping to prevent overfitting
+
+RMSE & MAE evaluation metrics
+
+4️⃣ Explainability Layer
+
+SHAP DeepExplainer (with fallback)
+
+Global feature importance
+
+Per-prediction explanation
+
+Heatmap visualization
+
+📊 Understanding the Financial Indicators
+
+This section helps non-traders understand the signals.
+
+📈 Simple Moving Average (SMA)
+
+SMA smooths price data to identify the true direction of movement.
+
+Example:
+SMA(30) = average closing price of last 30 days
+SMA(60) = average closing price of last 60 days
+
+Why Use Two SMAs?
+
+When short-term SMA crosses above long-term SMA:
+
+→ Recent prices are stronger than historical average
+→ Possible bullish trend
+
+When it crosses below:
+
+→ Possible bearish trend
+
+This creates buy/sell signals.
+
+SMA helps filter noise from daily price fluctuations.
+
+📉 Relative Strength Index (RSI)
+
+RSI measures momentum imbalance between buyers and sellers.
+
+It compares:
+
+Average recent gains
+
+Average recent losses
+
+Interpretation
+
+RSI > 70 → Market may be overbought
+RSI < 30 → Market may be oversold
+
+Important:
+RSI does NOT predict reversal.
+It indicates market exhaustion or imbalance.
+
+📊 MACD (Moving Average Convergence Divergence)
+
+MACD measures trend strength.
+
+It compares short-term and long-term exponential moving averages.
+
+If MACD increases:
+→ Trend gaining strength
+
+If MACD decreases while price rises:
+→ Trend weakening
+
+MACD helps detect potential momentum shifts.
+
+🤖 Machine Learning Model: LSTM
+What is LSTM?
+
+LSTM is a neural network specialized for sequence data.
+
+It remembers patterns across time.
+
+In this project:
+
+The model observes the last N days of prices
+and predicts the next day’s closing price.
+
+⏳ Look-Back Window
+
+Defines how many past days the model sees.
+
+Example:
+Look-back = 10
+Model uses 10 past days to predict the 11th.
+
+Small window → short-term focus
+Large window → longer trend memory
+
+📚 What is an Epoch?
+
+One epoch = one full pass over the training dataset.
+
+Too few epochs:
+→ Model underfits (does not learn enough)
+
+Too many epochs:
+→ Model overfits (memorizes noise)
+
+Early stopping monitors validation loss to stop training when overfitting begins.
+
+📉 Train / Validation / Test Split
+
+Time-series must be split chronologically.
+
+70% → Training
+15% → Validation
+15% → Testing
+
+Why?
+
+To simulate real-world forecasting.
+
+The model must predict data it has never seen.
+
+This prevents data leakage.
+
+📊 Evaluation Metrics
+RMSE (Root Mean Squared Error)
+
+Measures average prediction error.
+
+Penalizes large mistakes heavily.
+
+Lower RMSE = Better predictive accuracy.
+
+MAE (Mean Absolute Error)
+
+Measures average absolute difference between prediction and actual price.
+
+More intuitive but less sensitive to large errors than RMSE.
+
+📈 Predicted vs Actual Plot
+
+This graph shows:
+
+Training region
+
+Validation region
+
+Test region
+
+It visually demonstrates:
+
+Model generalization
+
+Overfitting detection
+
+Predictive stability
+
+If training error is low but test error high:
+
+→ Model memorized training data.
+
+🔍 Explainable AI (SHAP)
+
+Most neural networks are black boxes.
+
+SHAP explains:
+
+Why the model predicted what it did.
+
+Each past input day receives a SHAP value.
+
+Positive SHAP:
+Pushes prediction upward.
+
+Negative SHAP:
+Pushes prediction downward.
+
+SHAP Visualizations
+1️⃣ Global Importance Plot
+
+Shows which past days influence predictions most overall.
+
+2️⃣ Per-Instance Explanation
+
+Explains one specific forecast.
+
+3️⃣ SHAP Heatmap
+
+Shows explanation stability across multiple predictions.
+
+🧠 What Users Can Learn From This Dashboard
+
+Users can:
+
+Detect trends
+
+Measure trend strength
+
+Identify market imbalance
+
+Observe model training behavior
+
+Detect overfitting
+
+Understand AI decision reasoning
+
+Compare human indicators with machine learning behavior
+
+⚙️ Adjustable Parameters
+
+Users can control:
+
+Look-back window
+
+Epoch count
+
+LSTM units
+
+Dropout rate
+
+Batch size
+
+Data period
+
+Data interval
+
+This allows experimentation with:
+
+Model complexity
+
+Bias-variance tradeoff
+
+Short vs long-term memory
+
+⚠️ Limitations
+
+Uses primarily closing price data
+
+Does not include macroeconomic indicators
+
+Not a trading recommendation tool
+
+Markets are inherently unpredictable
+
+This project demonstrates modeling discipline and interpretability — not guaranteed profitability.
+
+🚀 Future Improvements
+
+Multi-variable LSTM (OHLC + Volume)
+
+ARIMA and Transformer comparison
+
+Inverse-scaled real-price error metrics
+
+Ensemble modeling
+
+Advanced feature engineering
+
+📦 Installation & Run
+pip install -r requirements.txt
+streamlit run RA_Thesis_full_improved.py
+📌 Disclaimer
+
+This project is for educational and research purposes only.
+It does not constitute financial advice.
