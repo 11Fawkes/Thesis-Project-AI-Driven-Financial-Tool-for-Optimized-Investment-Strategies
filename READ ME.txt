@@ -1,29 +1,20 @@
-📈 AI-Driven Financial Analysis & Explainable Stock Forecasting Dashboard
-🔎 Overview
+⚡ AI-Driven Financial Analysis & Explainable Stock Forecasting Dashboard
 
-This project integrates Machine Learning, Technical Analysis, and Explainable AI into an interactive Streamlit dashboard for stock analysis and forecasting.
+This project integrates machine learning, technical analysis, and model explainability into a single interactive Streamlit dashboard.
 
 It combines:
 
-LSTM (Long Short-Term Memory) for stock price forecasting
+LSTM for sequence-based stock forecasting
 
-SMA (Simple Moving Average) for trend detection
+SMA, RSI, and MACD for trend and momentum analysis
 
-RSI & MACD for momentum and strength analysis
+SHAP for transparent AI decision explanation
 
-SHAP (SHapley Additive Explanations) for model interpretability
+Proper time-based train / validation / test discipline
 
-The goal is not just to predict stock prices, but to:
+The goal is not to build a trading bot.
 
-Detect market trends
-
-Evaluate model performance responsibly
-
-Prevent overfitting
-
-Explain model decisions transparently
-
-Demonstrate disciplined financial AI modeling
+The goal is to demonstrate disciplined, explainable financial AI modeling.
 
 🎯 What Problem Does This Solve?
 
@@ -31,132 +22,79 @@ Many stock prediction projects:
 
 Overfit historical data
 
-Ignore train/test discipline
+Ignore proper train/test splitting
 
-Use black-box models
+Use black-box neural networks
 
 Provide no explanation for predictions
 
-Present unrealistic forecasting claims
+Make unrealistic forecasting claims
 
 This project focuses on:
 
-✅ Proper time-based train / validation / test splitting
-✅ Overfitting awareness via loss curves
-✅ Transparent prediction evaluation
+✅ Proper chronological train / validation / test splitting
+
+✅ Overfitting awareness via training & validation loss curves
+
+✅ Transparent prediction evaluation (RMSE & MAE)
+
 ✅ Explainable AI using SHAP
+
 ✅ Integration of human financial intuition with ML
 
 It is built as an educational and decision-intelligence demonstration tool, not a trading system.
 
-🏗 System Architecture
+📊 Financial Indicators Explained
+🔹 Simple Moving Average (SMA)
 
-The system is structured in four conceptual layers:
+SMA smooths price data to reveal trend direction.
 
-1️⃣ Data Layer
+SMA(30) → short-term trend
 
-Retrieves stock data (Yahoo Finance with fallback)
+SMA(60) → long-term trend
 
-Cleans and preprocesses time-series data
+When SMA(30) crosses above SMA(60):
 
-Applies MinMax scaling for neural network stability
+→ Recent momentum stronger than historical average
 
-2️⃣ Feature Engineering Layer
+This generates Buy/Sell crossover signals.
 
-Generates financial indicators:
+Purpose:
+Helps separate real trends from market noise.
 
-SMA (trend detection)
+🔹 Relative Strength Index (RSI)
 
-RSI (momentum imbalance)
+RSI measures recent buying vs selling strength.
 
-MACD (trend strength & acceleration)
+RSI > 70 → market may be overbought
 
-3️⃣ Modeling Layer
-
-LSTM sequence model
-
-Chronological 70/15/15 train/validation/test split
-
-Early stopping to prevent overfitting
-
-RMSE & MAE evaluation metrics
-
-4️⃣ Explainability Layer
-
-SHAP DeepExplainer (with fallback)
-
-Global feature importance
-
-Per-prediction explanation
-
-Heatmap visualization
-
-📊 Understanding the Financial Indicators
-
-This section helps non-traders understand the signals.
-
-📈 Simple Moving Average (SMA)
-
-SMA smooths price data to identify the true direction of movement.
-
-Example:
-SMA(30) = average closing price of last 30 days
-SMA(60) = average closing price of last 60 days
-
-Why Use Two SMAs?
-
-When short-term SMA crosses above long-term SMA:
-
-→ Recent prices are stronger than historical average
-→ Possible bullish trend
-
-When it crosses below:
-
-→ Possible bearish trend
-
-This creates buy/sell signals.
-
-SMA helps filter noise from daily price fluctuations.
-
-📉 Relative Strength Index (RSI)
-
-RSI measures momentum imbalance between buyers and sellers.
-
-It compares:
-
-Average recent gains
-
-Average recent losses
-
-Interpretation
-
-RSI > 70 → Market may be overbought
-RSI < 30 → Market may be oversold
+RSI < 30 → market may be oversold
 
 Important:
-RSI does NOT predict reversal.
-It indicates market exhaustion or imbalance.
 
-📊 MACD (Moving Average Convergence Divergence)
+RSI does not predict reversal.
+It signals momentum imbalance.
 
-MACD measures trend strength.
+🔹 MACD (Momentum Indicator)
 
-It compares short-term and long-term exponential moving averages.
+MACD compares short-term and long-term exponential averages.
 
-If MACD increases:
+If MACD rises:
+
 → Trend gaining strength
 
-If MACD decreases while price rises:
+If MACD falls while price rises:
+
 → Trend weakening
 
-MACD helps detect potential momentum shifts.
+This helps detect potential momentum shifts.
 
-🤖 Machine Learning Model: LSTM
+🤖 Machine Learning Model (LSTM)
 What is LSTM?
 
-LSTM is a neural network specialized for sequence data.
+LSTM (Long Short-Term Memory) is a neural network designed for time-series data.
 
-It remembers patterns across time.
+It learns patterns from sequences.
 
 In this project:
 
@@ -168,178 +106,253 @@ and predicts the next day’s closing price.
 Defines how many past days the model sees.
 
 Example:
-Look-back = 10
-Model uses 10 past days to predict the 11th.
 
-Small window → short-term focus
-Large window → longer trend memory
+Look-back = 10
+The model uses 10 previous days to predict day 11.
+
+Smaller window → short-term behavior
+
+Larger window → longer memory
 
 📚 What is an Epoch?
 
-One epoch = one full pass over the training dataset.
+One epoch = one complete pass over the training dataset.
 
-Too few epochs:
-→ Model underfits (does not learn enough)
+Too few epochs → underfitting
 
-Too many epochs:
-→ Model overfits (memorizes noise)
+Too many epochs → overfitting
 
-Early stopping monitors validation loss to stop training when overfitting begins.
+Early stopping prevents memorization.
 
-📉 Train / Validation / Test Split
+📉 Train / Validation / Test Discipline
 
-Time-series must be split chronologically.
+Data is split chronologically:
 
 70% → Training
+
 15% → Validation
-15% → Testing
+
+15% → Test
 
 Why?
 
 To simulate real-world forecasting.
 
-The model must predict data it has never seen.
+The model must predict unseen future data.
 
-This prevents data leakage.
+This prevents data leakage and unrealistic accuracy.
 
-📊 Evaluation Metrics
+📊 Model Evaluation
 RMSE (Root Mean Squared Error)
 
 Measures average prediction error.
-
-Penalizes large mistakes heavily.
-
-Lower RMSE = Better predictive accuracy.
+Penalizes large mistakes more heavily.
 
 MAE (Mean Absolute Error)
 
-Measures average absolute difference between prediction and actual price.
+Measures average absolute prediction difference.
 
-More intuitive but less sensitive to large errors than RMSE.
-
-📈 Predicted vs Actual Plot
-
-This graph shows:
-
-Training region
-
-Validation region
-
-Test region
-
-It visually demonstrates:
-
-Model generalization
-
-Overfitting detection
-
-Predictive stability
-
-If training error is low but test error high:
-
-→ Model memorized training data.
+Lower values indicate better performance.
 
 🔍 Explainable AI (SHAP)
+What SHAP Actually Is (Conceptually)
 
-Most neural networks are black boxes.
+SHAP comes from Shapley values in game theory.
+
+Imagine:
+
+Multiple players contribute to a final outcome.
+You want to fairly assign credit to each player.
+
+In your model:
+
+Players = past input days (Day -1, Day -2, etc.)
+
+Outcome = predicted price
+
+SHAP answers:
+
+“How much did each input contribute to this prediction?”
+
+Important:
+
+SHAP does NOT say:
+
+This caused the price
+
+This is true in the real world
+
+It says:
+
+The model relied on this input.
+
+That is very different.
+
+🧠 In This Project: What Are the Features?
+
+Your LSTM sees:
+
+Past N days of closing prices.
+
+Example (look-back = 10):
+
+Day -10
+
+Day -9
+
+Day -8
+
+...
+
+Day -1
+
+The model uses those 10 values to predict the next day.
 
 SHAP explains:
 
-Why the model predicted what it did.
+How much each of those 10 days influenced the output.
 
-Each past input day receives a SHAP value.
+📊 SHAP Graph Interpretations
+1️⃣ SHAP Summary Plot (Dot Plot)
 
-Positive SHAP:
-Pushes prediction upward.
+This is the most important SHAP graph.
 
-Negative SHAP:
-Pushes prediction downward.
+What it shows:
 
-SHAP Visualizations
-1️⃣ Global Importance Plot
+Each row = one feature (e.g., Day -1)
 
-Shows which past days influence predictions most overall.
+Each dot = one test prediction
 
-2️⃣ Per-Instance Explanation
+X-axis = SHAP value (impact on prediction)
 
-Explains one specific forecast.
+Right side → pushes prediction up
+Left side → pushes prediction down
 
-3️⃣ SHAP Heatmap
+How to Interpret
 
-Shows explanation stability across multiple predictions.
+If Day -1 has wide spread values:
 
-🧠 What Users Can Learn From This Dashboard
+→ The model heavily depends on yesterday’s price.
 
-Users can:
+If Day -8 has very small spread:
 
-Detect trends
+→ The model barely uses that day.
 
-Measure trend strength
+If recent days dominate:
 
-Identify market imbalance
+→ Model is momentum-focused.
 
-Observe model training behavior
+If older days matter:
 
-Detect overfitting
+→ Model sees longer-term memory.
 
-Understand AI decision reasoning
+This reveals the type of strategy your model has implicitly learned.
 
-Compare human indicators with machine learning behavior
+2️⃣ Global Feature Importance (Bar Chart)
 
-⚙️ Adjustable Parameters
+This averages absolute SHAP values.
 
-Users can control:
+It answers:
 
-Look-back window
+“On average, which inputs matter most?”
 
-Epoch count
+If ranking is:
 
-LSTM units
+Day -1 > Day -2 > Day -3 > …
 
-Dropout rate
+That’s normal.
 
-Batch size
+Markets are often most influenced by recent behavior.
 
-Data period
+If importance decays gradually:
 
-Data interval
+→ Model learned proper temporal structure.
 
-This allows experimentation with:
+If importance appears random:
 
-Model complexity
+→ Model may not be stable.
 
-Bias-variance tradeoff
+3️⃣ Per-Instance Explanation
 
-Short vs long-term memory
+This explains one prediction.
 
-⚠️ Limitations
+Each bar shows:
 
-Uses primarily closing price data
+How much that input pushed prediction up or down.
 
-Does not include macroeconomic indicators
+Green → pushes up
 
-Not a trading recommendation tool
+Red → pushes down
 
-Markets are inherently unpredictable
+Example:
 
-This project demonstrates modeling discipline and interpretability — not guaranteed profitability.
+Prediction = 102
 
-🚀 Future Improvements
+Day -1 = +0.8
 
-Multi-variable LSTM (OHLC + Volume)
+Day -2 = +0.6
 
-ARIMA and Transformer comparison
+Day -3 = -0.2
 
-Inverse-scaled real-price error metrics
+This means:
 
-Ensemble modeling
+Recent positive momentum influenced the forecast.
 
-Advanced feature engineering
+Professional interpretation example:
 
-📦 Installation & Run
-pip install -r requirements.txt
-streamlit run RA_Thesis_full_improved.py
-📌 Disclaimer
+“The model’s upward prediction is primarily driven by strong recent gains rather than long-term trend.”
 
-This project is for educational and research purposes only.
-It does not constitute financial advice.
+4️⃣ SHAP Heatmap
+
+Rows = predictions
+
+Columns = features
+
+Color intensity = strength of influence
+
+How to Interpret
+
+If the same columns dominate across rows:
+
+→ Model is consistent.
+
+If patterns shift wildly:
+
+→ Model may be unstable or overly sensitive to noise.
+
+Consistency = trust.
+Randomness = caution.
+
+⚠️ What SHAP Does NOT Mean
+
+SHAP does NOT say:
+
+“This day caused price to rise.”
+
+“This is a trading signal.”
+
+“The market reacts this way.”
+
+It says:
+
+“The model relies on this input to compute its prediction.”
+
+It explains model logic — not market causation.
+
+🧩 How SHAP Connects to Indicators
+
+If:
+
+MACD shows momentum strengthening
+
+RSI shows buyers dominating
+
+SHAP shows recent days pushing prediction upward
+
+That alignment increases interpretability confidence.
+
+This project combines:
+
+Human signals + AI reasoning.
+
+That integration is rare in beginner financial ML systems.
